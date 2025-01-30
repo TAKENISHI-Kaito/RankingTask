@@ -1,0 +1,33 @@
+{{ block title }}
+種類 {{ kind_number }}　{{ kind }}
+{{ endblock }}
+{{ block content }}
+
+<div style="background-color: #e6e6e6;">
+    <h5>例題</h5>
+    <p>
+        <b>{{ question }}</b>はどちらですか？
+    </p>
+    <ul ul  style="list-style-type:circle;">
+        <li>{{ example1 }}</li>
+        <li>{{ example2 }}</li>
+    </ul>
+</div>
+
+<ul>
+    {% for note in annotations %}
+        <li>{{ note }}</li>
+    {% endfor %}
+</ul>
+
+<br>
+
+<p>
+    {{ instruction }}
+</p>
+
+<br>
+
+    {{ next_button }}
+
+{{ endblock }}
