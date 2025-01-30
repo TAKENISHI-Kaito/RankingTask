@@ -19,7 +19,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     TASKS_INFO = tasks_info 
     NUM_PAIRS = 21
-    NUM_ROUNDS = 11 + (2 + NUM_PAIRS) * len(TASKS_INFO) + 2 # instruction + task + result = 151
+    NUM_ROUNDS = 10 + (2 + NUM_PAIRS) * len(TASKS_INFO) + 2 # instruction + task + result = 151
 
 class Subsession(BaseSubsession):
     pass
@@ -28,11 +28,11 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-    informed_consent = models.CharField(
-        initial = None,
-        choices = ['私は、以上の説明を理解したうえで、本調査に参加することに同意します。'],
-        widget = widgets.RadioSelect()
-        )
+    # informed_consent = models.CharField(
+    #     initial = None,
+    #     choices = ['私は、以上の説明を理解したうえで、本調査に参加することに同意します。'],
+    #     widget = widgets.RadioSelect()
+    #     )
     id_number = models.IntegerField(
         initial = None,
         verbose_name = 'あなたのID番号を入力してください。'
@@ -105,20 +105,24 @@ def creating_session(subsession: Subsession):
 
 
 # PAGES
-class InformedConsent(Page):
-    form_model = 'player'
-    form_fields = ['informed_consent']
+# class InformedConsent(Page):
+#     form_model = 'player'
+#     form_fields = ['informed_consent']
 
+#     def is_displayed(player):
+#         return player.round_number == 1
+    
+#     def error_message(player, value):
+#         if not value.get('informed_consent'):
+#             return '回答を選択してください。'
+    
+#     def before_next_page(player, timeout_happened):
+#         player.participant.vars['informed_consent'] = player.informed_consent
+
+class Wait(Page):
+    @staticmethod
     def is_displayed(player):
         return player.round_number == 1
-    
-    def error_message(player, value):
-        if not value.get('informed_consent'):
-            return '回答を選択してください。'
-    
-    def before_next_page(player, timeout_happened):
-        player.participant.vars['informed_consent'] = player.informed_consent
-
 
 class Demographic(Page):
     form_model = 'player'
@@ -337,8 +341,14 @@ class Answer(Page):
                 'candidates': task['candidate']
             })
         
+        total_correct_count = sum(task['correct_count'] for task in task_answers)
+        total_correct_rate = total_correct_count / (len(C.TASKS_INFO) * C.NUM_PAIRS)
+        reward = 500 if total_correct_rate <= 50 else 600 if 50 < total_correct_rate <= 60 else 700 if 60 < total_correct_rate <= 70 else 800 if 70 < total_correct_rate <= 80 else 900 if 80 < total_correct_rate <= 90 else 1000
+        
         return {
-            'task_answers': task_answers
+            'task_answers': task_answers,
+            'total_correct_count': total_correct_count,
+            'reward': reward
         }
 
 
@@ -349,7 +359,9 @@ class Results(Page):
 
 
 page_sequence = [
-    InformedConsent, Demographic,
+    Wait,
+    #InformedConsent,
+    Demographic,
     PreInstruction1, PreInstruction2, PreInstruction3, PreInstruction4,
     Announce, Instruction, Task,
     Answer, Results
@@ -359,7 +371,9 @@ page_sequence = [
 def custom_export(players):
     yield [
         'participant_code', 'session_code', 'time_started_utc',
-        'ID', 'informed_consent', 'gender', 'age',
+        'ID', 
+        #'informed_consent',
+        'gender', 'age',
         'answer_order_id','questionID', 'task_id', 'kind', 'subquestionID', 
         'option1', 'option2', 'rank1', 'rank2',
         'answer', 'true_false', 'confidence', 'confidence_num', 'time_spent'
@@ -374,7 +388,7 @@ def custom_export(players):
                     player.session.code,
                     player.participant.time_started_utc,
                     player.participant.vars.get('id_number'),
-                    player.participant.vars.get('informed_consent'),
+                    # player.participant.vars.get('informed_consent'),
                     player.participant.vars.get('gender'),
                     player.participant.vars.get('age'),
                     task['answer_order_id'],
