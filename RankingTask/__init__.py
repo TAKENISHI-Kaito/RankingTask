@@ -348,6 +348,7 @@ class Answer(Page):
         return {
             'task_answers': task_answers,
             'total_correct_count': total_correct_count,
+            'total_correct_rate': total_correct_rate,
             'reward': reward
         }
 
