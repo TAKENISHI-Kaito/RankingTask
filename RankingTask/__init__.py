@@ -19,7 +19,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     TASKS_INFO = tasks_info 
     NUM_PAIRS = 21
-    NUM_ROUNDS = 10 + (2 + NUM_PAIRS) * len(TASKS_INFO) + 2 # instruction + task + result = 151
+    NUM_ROUNDS = 12 + (2 + NUM_PAIRS) * len(TASKS_INFO) + 2 # instruction + task + result = 151
 
 class Subsession(BaseSubsession):
     pass
@@ -28,11 +28,6 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-    # informed_consent = models.CharField(
-    #     initial = None,
-    #     choices = ['私は、以上の説明を理解したうえで、本調査に参加することに同意します。'],
-    #     widget = widgets.RadioSelect()
-    #     )
     id_number = models.IntegerField(
         initial = None,
         verbose_name = 'あなたのID番号を入力してください。'
@@ -49,7 +44,6 @@ class Player(BasePlayer):
         )
     
     ranking_task = models.LongStringField()
-    
     confidence = models.CharField(
         initial = None,
         choices = ['きわめて自信がある','かなり自信がある', '自信がある', 'あまり自信がない','ほとんど自信がない'],
@@ -105,20 +99,6 @@ def creating_session(subsession: Subsession):
 
 
 # PAGES
-# class InformedConsent(Page):
-#     form_model = 'player'
-#     form_fields = ['informed_consent']
-
-#     def is_displayed(player):
-#         return player.round_number == 1
-    
-#     def error_message(player, value):
-#         if not value.get('informed_consent'):
-#             return '回答を選択してください。'
-    
-#     def before_next_page(player, timeout_happened):
-#         player.participant.vars['informed_consent'] = player.informed_consent
-
 class Wait(Page):
     @staticmethod
     def is_displayed(player):
@@ -188,16 +168,21 @@ class PreInstruction4(Page):
     def is_displayed(player):
         return player.round_number == 11
 
+class PreInstruction5(Page):
+    form_model = 'player'
+
+    def is_displayed(player):
+        return player.round_number == 12
 
 class Announce(Page):
     @staticmethod
     def is_displayed(player: Player):
-        task_set_start_rounds = [12 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
+        task_set_start_rounds = [13 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
         return player.round_number in task_set_start_rounds
 
     @staticmethod
     def vars_for_template(player):
-        task_index = (player.round_number - 12) // (C.NUM_PAIRS + 2)
+        task_index = (player.round_number - 13) // (C.NUM_PAIRS + 2)
         current_task = player.participant.vars['randomized_tasks'][task_index * C.NUM_PAIRS]['kind']
 
         return {
@@ -209,13 +194,13 @@ class Announce(Page):
 class Instruction(Page):
     @staticmethod
     def is_displayed(player: Player):
-        task_set_start_rounds = [12 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
+        task_set_start_rounds = [13 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
         instruction_rounds = [round + 1 for round in task_set_start_rounds]
         return player.round_number in instruction_rounds
 
     @staticmethod
     def vars_for_template(player):
-        task_index = (player.round_number - 12) // (C.NUM_PAIRS + 2)
+        task_index = (player.round_number - 13) // (C.NUM_PAIRS + 2)
         current_task = player.participant.vars['randomized_tasks'][task_index * C.NUM_PAIRS]['kind']
         current_task_info = next(task for task in C.TASKS_INFO if task['kind'] == current_task)
 
@@ -234,7 +219,7 @@ class Task(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        task_set_start_rounds = [12 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
+        task_set_start_rounds = [13 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
         task_rounds = [round + j for round in task_set_start_rounds for j in range(2, 2 + C.NUM_PAIRS)]
         return player.round_number in task_rounds
 
@@ -243,8 +228,8 @@ class Task(Page):
         player.participant.vars['start_time'] = time()
         
         task_cycle_length = 2 + C.NUM_PAIRS
-        task_index = (player.round_number - 12) // task_cycle_length
-        offset = 14 + task_index * 2
+        task_index = (player.round_number - 13) // task_cycle_length
+        offset = 15 + task_index * 2
         current_question_index = player.round_number - offset
         current_question = player.participant.vars['randomized_tasks'][current_question_index]
         
@@ -272,8 +257,8 @@ class Task(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         task_cycle_length = 2 + C.NUM_PAIRS
-        task_index = (player.round_number - 12) // task_cycle_length
-        offset = 14 + task_index * 2
+        task_index = (player.round_number - 13) // task_cycle_length
+        offset = 15 + task_index * 2
         current_question_index = player.round_number - offset
         
         start_time = player.participant.vars.get('start_time')
@@ -341,12 +326,13 @@ class Answer(Page):
                 'candidates': task['candidate']
             })
         
+        total_quesiotns = len(C.TASKS_INFO) * C.NUM_PAIRS
         total_correct_count = sum(task['correct_count'] for task in task_answers)
-        total_correct_rate = total_correct_count / (len(C.TASKS_INFO) * C.NUM_PAIRS)
+        total_correct_rate = round(total_correct_count/total_question, 2)*100
         reward = 500 if total_correct_rate <= 50 else 600 if 50 < total_correct_rate <= 60 else 700 if 60 < total_correct_rate <= 70 else 800 if 70 < total_correct_rate <= 80 else 900 if 80 < total_correct_rate <= 90 else 1000
         
         return {
-            'task_answers': task_answers,
+            'total_question': len(C.TASKS_INFO) * C.NUM_PAIRS,
             'total_correct_count': total_correct_count,
             'total_correct_rate': total_correct_rate,
             'reward': reward
@@ -361,9 +347,8 @@ class Results(Page):
 
 page_sequence = [
     Wait,
-    #InformedConsent,
     Demographic,
-    PreInstruction1, PreInstruction2, PreInstruction3, PreInstruction4,
+    PreInstruction1, PreInstruction2, PreInstruction3, PreInstruction4, PreInstruction5,
     Announce, Instruction, Task,
     Answer, Results
 ]
@@ -373,7 +358,6 @@ def custom_export(players):
     yield [
         'participant_code', 'session_code', 'time_started_utc',
         'ID', 
-        #'informed_consent',
         'gender', 'age',
         'answer_order_id','questionID', 'task_id', 'kind', 'subquestionID', 
         'option1', 'option2', 'rank1', 'rank2',
@@ -389,7 +373,6 @@ def custom_export(players):
                     player.session.code,
                     player.participant.time_started_utc,
                     player.participant.vars.get('id_number'),
-                    # player.participant.vars.get('informed_consent'),
                     player.participant.vars.get('gender'),
                     player.participant.vars.get('age'),
                     task['answer_order_id'],

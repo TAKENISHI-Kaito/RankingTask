@@ -4,26 +4,11 @@
 
 {{ block content }}
 <p>
-    これで全ての問題は終了です。あなたは全126問中{{ total_correct_count }}問正解しました（正答率{{ total_correct_rate }}%）。あなたが獲得した報酬は{{ reward }}円です。
+    これで全ての問題は終了です。あなたは全{{ total_questions }}問中{{ total_correct_count }}問正解しました（正答率{{ total_correct_rate }}%）。
 </p>
 <p>
-    以下に、問題の正解とあなたの正解数を記載します。
+    あなたが獲得した報酬は{{ reward }}円です。
 </p>
-
-<br>
-
-{% for task in task_answers %}
-<h5>{{ task.kind }}</h5>
-<ol type = "1">
-    {% for candidate in task.candidates %}
-    <li>{{ candidate }}</li>
-    {% endfor %}
-</ol>
-<p>この種類であなたは{{ task.total_questions }}問中{{ task.correct_count }}問正解しました。</p>
-<br>
-{% endfor %}
-<br>
-
 
 {{ next_button }}
 {{ endblock }}
