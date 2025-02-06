@@ -2,36 +2,51 @@
 {{ pair_num }} 問目（全21問）
 {{ endblock }}
 
+{{ block title }}
+{{ pair_num }} 問目（全21問）
+{{ endblock }}
+
 {{ block content }}
     <p><b>{{ question }}</b>はどちらですか？</p>
 
     <form method="post">
         <p>
             <label>
-                <input type="radio" name="ranking_task" value="{{ option1 }}">{{ option1 }}
+                <input type="radio" name="ranking_task" value="{{ option1 }}"> {{ option1 }}
             </label>
         </p>
         <p>
             <label>
-                <input type="radio" name="ranking_task" value="{{ option2 }}">{{ option2 }}
+                <input type="radio" name="ranking_task" value="{{ option2 }}"> {{ option2 }}
             </label>
         </p>
 
-        <hr>
+        <br>
 
         <p><b>{{ confidence_question }}</b></p>
-        <p>
+        <p>とても自信がある ------------------- どちらでもない ------------------- まったく自信がない</p>
+        <div class="confidence-container">
             {% for choice in confidence_choices %}
-                <label>
-                    <input type="radio" name="confidence" value="{{ choice }}">{{ choice }}
-                </label><br>
+                <label class="confidence-option">
+                    <input type="radio" name="confidence" value="{{ choice }}"> {{ choice }}
+                </label>
             {% endfor %}
-        </p>
+        </div>
 
+        <br>
+
+        <button type="submit">次へ</button>
     </form>
 
-    <br>
+    <style>
+        .confidence-container {
+            display: flex;  /* 横並びにする */
+            gap: 23px;  /* 各ラジオボタンの間隔 */
+            flex-wrap: wrap; /* 画面幅が狭いとき折り返し */
+        }
 
-    {{ next_button }}
-
+        .confidence-option {
+            display: inline-block;
+        }
+    </style>
 {{ endblock }}

@@ -46,8 +46,8 @@ class Player(BasePlayer):
     ranking_task = models.LongStringField()
     confidence = models.CharField(
         initial = None,
-        choices = ['きわめて自信がある','かなり自信がある', '自信がある', 'あまり自信がない','ほとんど自信がない'],
-        verbose_name = 'どの程度自信がありますか？',
+        choices = ['+5', '+4', '+3', '+2', '+1', '0', '-1', '-2', '-3', '-4', '-5'],
+        verbose_name = 'その判断にどのくらい自信がありますか？',
         widget = widgets.RadioSelect()
     )
 
@@ -246,8 +246,8 @@ class Task(Page):
             'subquestion_id': current_question['subquestion_id'],
             'option1': current_question['option1'],
             'option2': current_question['option2'],
-            'confidence_question': 'その判断に自信がありますか？',
-            'confidence_choices': ['きわめて自信がある', 'かなり自信がある', '自信がある', 'あまり自信がない', 'ほとんど自信がない']
+            'confidence_question': 'その判断にどのくらい自信がありますか？',
+            'confidence_choices': ['+5', '+4', '+3', '+2', '+1', '0', '-1', '-2', '-3', '-4', '-5']
         }
     
         def error_message(player, value):
@@ -278,16 +278,28 @@ class Task(Page):
         confidence = player.confidence
         confidence_num = None
         
-        if confidence == 'きわめて自信がある':
+        if confidence == '+5':
             confidence_num = 5
-        elif confidence == 'かなり自信がある':
+        elif confidence == '+4':
             confidence_num = 4
-        elif confidence == '自信がある':
+        elif confidence == '+3':
             confidence_num = 3
-        elif confidence == 'あまり自信がない':
+        elif confidence == '+2':
             confidence_num = 2
-        elif confidence == 'ほとんど自信がない':
+        elif confidence == '+1':
             confidence_num = 1
+        elif confidence == '0':
+            confidence_num = 0
+        elif confidence == '-1':
+            confidence_num = -1
+        elif confidence == '-2':
+            confidence_num = -2
+        elif confidence == '-3':
+            confidence_num = -3
+        elif confidence == '-4':
+            confidence_num = -4
+        elif confidence == '-5':
+            confidence_num = -5
         
         player.participant.vars[f'answer_{current_question_index}'] = {
             'question_id': current_question['question_id'],
@@ -326,13 +338,13 @@ class Answer(Page):
                 'candidates': task['candidate']
             })
         
-        total_quesiotns = len(C.TASKS_INFO) * C.NUM_PAIRS
+        total_questions = len(C.TASKS_INFO) * C.NUM_PAIRS
         total_correct_count = sum(task['correct_count'] for task in task_answers)
-        total_correct_rate = round(total_correct_count/total_question, 2)*100
+        total_correct_rate = round(total_correct_count/total_questions, 2)*100
         reward = 500 if total_correct_rate <= 50 else 600 if 50 < total_correct_rate <= 60 else 700 if 60 < total_correct_rate <= 70 else 800 if 70 < total_correct_rate <= 80 else 900 if 80 < total_correct_rate <= 90 else 1000
         
         return {
-            'total_question': len(C.TASKS_INFO) * C.NUM_PAIRS,
+            'total_questions': len(C.TASKS_INFO) * C.NUM_PAIRS,
             'total_correct_count': total_correct_count,
             'total_correct_rate': total_correct_rate,
             'reward': reward
