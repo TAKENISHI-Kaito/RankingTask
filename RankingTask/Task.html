@@ -24,7 +24,7 @@
         <br>
 
         <p><b>{{ confidence_question }}</b></p>
-        <p>とても自信がある ------------------- どちらでもない ------------------- まったく自信がない</p>
+        <p>まったく自信がない ---------------- どちらでもない ---------------- とても自信がある</p>
         <div class="confidence-container">
             {% for choice in confidence_choices %}
                 <label class="confidence-option">
@@ -33,6 +33,9 @@
             {% endfor %}
         </div>
 
+        <br>
+        <br>
+        <br>
         <br>
 
         <button type="submit">次へ</button>

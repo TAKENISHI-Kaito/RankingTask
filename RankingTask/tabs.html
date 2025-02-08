@@ -1,0 +1,218 @@
+<div class="tab">
+    <h3>実験課題の説明</h3>
+      <p>この実験では、次のような問題に解答していただきます。</p>
+      <p>2つの選択肢があるので、いずれか正しいと思う方を選んでください。</p>
+      <div style="background-color: #e6e6e6;">
+          <h5>例題</h5>
+          <p><b>人口が多い都市</b>はどちらですか？</p>
+          <ul ul  style="list-style-type:circle;">
+              <li>ベルリン</li>
+              <li>ミュンヘン</li>
+          </ul>
+      </div>
+      <p>この例は、都市の人口を比較する課題です。</p>
+      <p>すべての問題には、客観的な正解があります。正しいと思う方を選んでください。</p>
+      <br>
+      <p>読み終わったら「次へ」のボタンを押してください。説明が続きます。</p>
+      <br>
+      <p><button type="button" class="btn-tab" data-offset="1">次へ</button></p>
+</div>
+  
+<div class="tab">
+    <h3>問題の説明</h3>
+        <p>問題は6種類あります。</p>
+        <p>それぞれの種類について21問ずつあります。</p>
+        <p>実験全体で、126問に解答していただきます。</p>
+        <p>これから6種類の詳細を説明します。</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>種類1　{{ kind_1 }}</h3>
+        <div style="background-color: #e6e6e6;">
+            <h5>例題</h5>
+            <p><b>{{ question_1 }}</b>はどちらですか？</p>
+            <ul ul  style="list-style-type:circle;">
+                <li>{{ example1_1 }}</li>
+                <li>{{ example2_1 }}</li>
+            </ul>
+        </div>
+        <ul>
+            {% for note in annotations_1 %}
+                <li>{{ note }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <p>{{ instruction_1 }}</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>種類2　{{ kind_2 }}</h3>
+        <div style="background-color: #e6e6e6;">
+            <h5>例題</h5>
+            <p><b>{{ question_2 }}</b>はどちらですか？</p>
+            <ul ul  style="list-style-type:circle;">
+                <li>{{ example1_2 }}</li>
+                <li>{{ example2_2 }}</li>
+            </ul>
+        </div>
+        <ul>
+            {% for note in annotations_2 %}
+                <li>{{ note }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <p>{{ instruction_2 }}</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>種類3　{{ kind_3 }}</h3>
+        <div style="background-color: #e6e6e6;">
+            <h5>例題</h5>
+            <p><b>{{ question_3 }}</b>はどちらですか？</p>
+            <ul ul  style="list-style-type:circle;">
+                <li>{{ example1_3 }}</li>
+                <li>{{ example2_3 }}</li>
+            </ul>
+        </div>
+        <ul>
+            {% for note in annotations_3 %}
+                <li>{{ note }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <p>{{ instruction_3 }}</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>種類4　{{ kind_4 }}</h3>
+        <div style="background-color: #e6e6e6;">
+            <h5>例題</h5>
+            <p><b>{{ question_4 }}</b>はどちらですか？</p>
+            <ul ul  style="list-style-type:circle;">
+                <li>{{ example1_4 }}</li>
+                <li>{{ example2_4 }}</li>
+            </ul>
+        </div>
+        <ul>
+            {% for note in annotations_4 %}
+                <li>{{ note }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <p>{{ instruction_4 }}</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>種類5　{{ kind_5 }}</h3>
+        <div style="background-color: #e6e6e6;">
+            <h5>例題</h5>
+            <p><b>{{ question_5 }}</b>はどちらですか？</p>
+            <ul ul  style="list-style-type:circle;">
+                <li>{{ example1_5 }}</li>
+                <li>{{ example2_5 }}</li>
+            </ul>
+        </div>
+        <ul>
+            {% for note in annotations_5 %}
+                <li>{{ note }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <p>{{ instruction_5 }}</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>種類6　{{ kind_6 }}</h3>
+        <div style="background-color: #e6e6e6;">
+            <h5>例題</h5>
+            <p><b>{{ question_6 }}</b>はどちらですか？</p>
+            <ul ul  style="list-style-type:circle;">
+                <li>{{ example1_6 }}</li>
+                <li>{{ example2_6 }}</li>
+            </ul>
+        </div>
+        <ul>
+            {% for note in annotations_6 %}
+                <li>{{ note }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <p>{{ instruction_6 }}</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>実験の報酬について</h3>
+        <p>本実験は、あなたの正答率に応じて報酬が決定されます。最低保証報酬は500円です。</p>
+        <p>正答率が高くなるほど、報酬が増えます。正答率が100%の場合、報酬は最大で1000円になります。</p>
+        <br>
+        <p>最後に、解答する上での心構えについてお伝えします。</p>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="button" class="btn-tab" data-offset="1">次へ</button>
+        </div>        
+</div>
+
+<div class="tab">
+    <h3>解答する上での心構え</h3>
+        <p>解答に際しては、<b>決して資料を見たりや他の人と相談したりせず、自身の判断で解答してください</b>。</p>
+        <p>また、実験中、紙にメモをとる行為もご遠慮ください。</p>
+        <p>実験者がこれらの行為を見つけた場合、その時点で実験を終了させていただきます。</p>
+        <br>
+        <p>次の画面から課題が始まります。<b>ここから先は、ページを戻ることができません</b>。</p>
+        <br>
+        <div>
+            <h5>注意</h5>
+            <ul>
+                <li>一度解答したら後から変更することができません。</li>
+                <li>ブラウザの「戻る」ボタンは押さないでください。</li>
+            </ul>
+        </div>
+        <br>
+        <div class="button-container">
+            <button type="button" class="btn-tab" data-offset="-1">戻る</button>
+            <button type="submit">次へ</button>
+        </div>
+</div>
+
+<style>
+    .button-container {
+        display: flex;
+        gap: 20px; /* ボタン間の間隔を設定 */
+    }
+</style>    

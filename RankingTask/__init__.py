@@ -19,7 +19,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     TASKS_INFO = tasks_info 
     NUM_PAIRS = 21
-    NUM_ROUNDS = 12 + (2 + NUM_PAIRS) * len(TASKS_INFO) + 2 # instruction + task + result = 151
+    NUM_ROUNDS = 3 + (2 + NUM_PAIRS) * len(TASKS_INFO) + 2 # instruction + task + result = 151
 
 class Subsession(BaseSubsession):
     pass
@@ -46,7 +46,7 @@ class Player(BasePlayer):
     ranking_task = models.LongStringField()
     confidence = models.CharField(
         initial = None,
-        choices = ['+5', '+4', '+3', '+2', '+1', '0', '-1', '-2', '-3', '-4', '-5'],
+        choices = ['-5', '-4', '-3', '-2', '-1', '0', '+1', '+2', '+3', '+4', '+5'],
         verbose_name = 'その判断にどのくらい自信がありますか？',
         widget = widgets.RadioSelect()
     )
@@ -126,63 +126,39 @@ class Demographic(Page):
         player.participant.vars['gender'] = player.gender
         player.participant.vars['age'] = player.age
 
-class PreInstruction1(Page):
+class PreInstruction(Page):
     form_model = 'player'
 
     @staticmethod
     def is_displayed(player):
         return player.round_number == 3
+        # 実験課題の説明：player.round_number == 3
+        # 問題の説明：player.round_number == 4
+        # 種類 {{ kind_number }}　{{ kind }}：5 <= player.round_number == <= 10
+        # 実験の報酬について：player.round_number == 11
+        # 解答する上での心構え：player.round_number == 12
 
-class PreInstruction2(Page):
-    form_model = 'player'
-
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number == 4
-
-class PreInstruction3(Page):
-    form_model = 'player'
-
-    @staticmethod
-    def is_displayed(player):
-        return 5 <= player.round_number <= 10
-    
     @staticmethod
     def vars_for_template(player):
-        task_index = player.round_number - 5
-        task_info = C.TASKS_INFO[task_index]
-        
         return {
-            'kind_number': task_index + 1,
-            'kind': task_info['kind'],
-            'question': task_info['question'],
-            'example1': task_info['example'][0],
-            'example2': task_info['example'][1],
-            'annotations': task_info['annotation'],
-            'instruction': task_info['instruction'][0]
+            **{f'kind_{i+1}': task['kind'] for i, task in enumerate(C.TASKS_INFO[:6])},
+            **{f'question_{i+1}': task['question'] for i, task in enumerate(C.TASKS_INFO[:6])},
+            **{f'example1_{i+1}': task['example'][0] for i, task in enumerate(C.TASKS_INFO[:6])},
+            **{f'example2_{i+1}': task['example'][1] for i, task in enumerate(C.TASKS_INFO[:6])},
+            **{f'annotations_{i+1}': task['annotation'] for i, task in enumerate(C.TASKS_INFO[:6])},
+            **{f'instruction_{i+1}': task['instruction'][0] for i, task in enumerate(C.TASKS_INFO[:6])},
         }
 
-class PreInstruction4(Page):
-    form_model = 'player'
-
-    def is_displayed(player):
-        return player.round_number == 11
-
-class PreInstruction5(Page):
-    form_model = 'player'
-
-    def is_displayed(player):
-        return player.round_number == 12
 
 class Announce(Page):
     @staticmethod
     def is_displayed(player: Player):
-        task_set_start_rounds = [13 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
+        task_set_start_rounds = [4 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
         return player.round_number in task_set_start_rounds
 
     @staticmethod
     def vars_for_template(player):
-        task_index = (player.round_number - 13) // (C.NUM_PAIRS + 2)
+        task_index = (player.round_number - 4) // (C.NUM_PAIRS + 2)
         current_task = player.participant.vars['randomized_tasks'][task_index * C.NUM_PAIRS]['kind']
 
         return {
@@ -194,13 +170,13 @@ class Announce(Page):
 class Instruction(Page):
     @staticmethod
     def is_displayed(player: Player):
-        task_set_start_rounds = [13 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
+        task_set_start_rounds = [4 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
         instruction_rounds = [round + 1 for round in task_set_start_rounds]
         return player.round_number in instruction_rounds
 
     @staticmethod
     def vars_for_template(player):
-        task_index = (player.round_number - 13) // (C.NUM_PAIRS + 2)
+        task_index = (player.round_number - 4) // (C.NUM_PAIRS + 2)
         current_task = player.participant.vars['randomized_tasks'][task_index * C.NUM_PAIRS]['kind']
         current_task_info = next(task for task in C.TASKS_INFO if task['kind'] == current_task)
 
@@ -219,7 +195,7 @@ class Task(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        task_set_start_rounds = [13 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
+        task_set_start_rounds = [4 + i * (C.NUM_PAIRS + 2) for i in range(len(C.TASKS_INFO))]
         task_rounds = [round + j for round in task_set_start_rounds for j in range(2, 2 + C.NUM_PAIRS)]
         return player.round_number in task_rounds
 
@@ -228,8 +204,8 @@ class Task(Page):
         player.participant.vars['start_time'] = time()
         
         task_cycle_length = 2 + C.NUM_PAIRS
-        task_index = (player.round_number - 13) // task_cycle_length
-        offset = 15 + task_index * 2
+        task_index = (player.round_number - 4) // task_cycle_length
+        offset = 6 + task_index * 2
         current_question_index = player.round_number - offset
         current_question = player.participant.vars['randomized_tasks'][current_question_index]
         
@@ -247,7 +223,7 @@ class Task(Page):
             'option1': current_question['option1'],
             'option2': current_question['option2'],
             'confidence_question': 'その判断にどのくらい自信がありますか？',
-            'confidence_choices': ['+5', '+4', '+3', '+2', '+1', '0', '-1', '-2', '-3', '-4', '-5']
+            'confidence_choices': ['-5', '-4', '-3', '-2', '-1', '0', '+1', '+2', '+3', '+4', '+5']
         }
     
         def error_message(player, value):
@@ -257,8 +233,8 @@ class Task(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         task_cycle_length = 2 + C.NUM_PAIRS
-        task_index = (player.round_number - 13) // task_cycle_length
-        offset = 15 + task_index * 2
+        task_index = (player.round_number - 4) // task_cycle_length
+        offset = 6 + task_index * 2
         current_question_index = player.round_number - offset
         
         start_time = player.participant.vars.get('start_time')
@@ -276,37 +252,12 @@ class Task(Page):
             true_false = 1 if current_question['rank2'] < current_question['rank1'] else 0
             
         confidence = player.confidence
-        confidence_num = None
-        
-        if confidence == '+5':
-            confidence_num = 5
-        elif confidence == '+4':
-            confidence_num = 4
-        elif confidence == '+3':
-            confidence_num = 3
-        elif confidence == '+2':
-            confidence_num = 2
-        elif confidence == '+1':
-            confidence_num = 1
-        elif confidence == '0':
-            confidence_num = 0
-        elif confidence == '-1':
-            confidence_num = -1
-        elif confidence == '-2':
-            confidence_num = -2
-        elif confidence == '-3':
-            confidence_num = -3
-        elif confidence == '-4':
-            confidence_num = -4
-        elif confidence == '-5':
-            confidence_num = -5
         
         player.participant.vars[f'answer_{current_question_index}'] = {
             'question_id': current_question['question_id'],
             'answer': answer,
             'true_false': true_false,
             'confidence': confidence,
-            'confidence_num': confidence_num,
             'time_spent': elapsed_time
         }
 
@@ -359,8 +310,8 @@ class Results(Page):
 
 page_sequence = [
     Wait,
-    Demographic,
-    PreInstruction1, PreInstruction2, PreInstruction3, PreInstruction4, PreInstruction5,
+    Demographic, PreInstruction,
+    # PreInstruction1, PreInstruction2, PreInstruction3, PreInstruction4, PreInstruction5,
     Announce, Instruction, Task,
     Answer, Results
 ]
@@ -373,7 +324,7 @@ def custom_export(players):
         'gender', 'age',
         'answer_order_id','questionID', 'task_id', 'kind', 'subquestionID', 
         'option1', 'option2', 'rank1', 'rank2',
-        'answer', 'true_false', 'confidence', 'confidence_num', 'time_spent'
+        'answer', 'true_false', 'confidence', 'time_spent'
     ]
     for player in players:
         if player.round_number == C.NUM_ROUNDS:
@@ -399,6 +350,5 @@ def custom_export(players):
                     answer_data.get('answer'),
                     answer_data.get('true_false'),
                     answer_data.get('confidence'),
-                    answer_data.get('confidence_num'),
                     elapsed_time
                 ]
