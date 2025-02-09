@@ -30,7 +30,7 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     id_number = models.IntegerField(
         initial = None,
-        verbose_name = 'あなたのID番号を入力してください。'
+        verbose_name = 'あなたのID番号を入力してください（半角）。'
         )
     gender = models.CharField(
         initial = None,
@@ -291,13 +291,11 @@ class Answer(Page):
         
         total_questions = len(C.TASKS_INFO) * C.NUM_PAIRS
         total_correct_count = sum(task['correct_count'] for task in task_answers)
-        total_correct_rate = round(total_correct_count/total_questions, 2)*100
-        reward = 500 if total_correct_rate <= 50 else 600 if 50 < total_correct_rate <= 60 else 700 if 60 < total_correct_rate <= 70 else 800 if 70 < total_correct_rate <= 80 else 900 if 80 < total_correct_rate <= 90 else 1000
+        reward = 200 + 10*total_correct_count
         
         return {
             'total_questions': len(C.TASKS_INFO) * C.NUM_PAIRS,
             'total_correct_count': total_correct_count,
-            'total_correct_rate': total_correct_rate,
             'reward': reward
         }
 
@@ -311,7 +309,6 @@ class Results(Page):
 page_sequence = [
     Wait,
     Demographic, PreInstruction,
-    # PreInstruction1, PreInstruction2, PreInstruction3, PreInstruction4, PreInstruction5,
     Announce, Instruction, Task,
     Answer, Results
 ]
