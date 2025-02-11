@@ -65,11 +65,15 @@ h3 {
 }
 
 h5 {
-  /* Header 4 */
+  /* Header 5 */
   font-family: "Meiryo", sans-serif;
   font-size: 25pt;
   /* padding: 0.25em 0.25em 0.25em 0.75em; */
   color: black;
+}
+
+.small-font {
+    font-size: 12pt; /* ここでフォントサイズを小さく設定 */
 }
 
 .main-container {
