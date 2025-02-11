@@ -15,7 +15,7 @@ li {
 * {
   /* Normal text */
   font-family: "メイリオ", "Meiryo", sans-serif;
-  font-size: 25pt;
+  font-size: 23pt;
   color: Black;
 }
 
@@ -50,34 +50,24 @@ strong {
 h1 {
   /* Header 1 */
   font-family: "Meiryo", sans-serif;
-  font-size: 40px;
+  font-size: 30pt;
   font-weight: bold;
   color: black;
-}
-
-h2 {
-  /* Header 2 */
-  font-family: "Meiryo", sans-serif;
-  font-size: 32px;
-  font-weight: bold;
-  color: black;
-  /* position: relative; */
-  /* padding: 0.25em 0.5em 0.5em 0.75em; */
 }
 
 h3 {
   /* Header 3 */
   font-family: "Meiryo", sans-serif;
-  font-size: 28px;
+  font-size: 28pt;
   font-weight: bold;
   color: black;
   /* padding: 0.25em 0.25em 0.25em 0.75em; */
 }
 
-h4 {
+h5 {
   /* Header 4 */
   font-family: "Meiryo", sans-serif;
-  font-size: 24px;
+  font-size: 25pt;
   /* padding: 0.25em 0.25em 0.25em 0.75em; */
   color: black;
 }
