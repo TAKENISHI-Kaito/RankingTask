@@ -23,9 +23,9 @@
         <br>
 
         <p><b>{{ confidence_question }}</b></p>
-        <label class="scale">
+        <div class="scale">
             <p>まったく自信がない ---------------- どちらでもない ---------------- とても自信がある</p>
-        </label>
+        </div>
         <div class="confidence-container">
             {% for choice in confidence_choices %}
                 <label class="confidence-option">
@@ -54,7 +54,7 @@
         }
 
         .scale {
-            font-size: 15pt;
+            font-size: 13pt;
         }
     </style>
 {{ endblock }}
