@@ -7,6 +7,9 @@
 {{ endblock }}
 
 {{ block content }}
+
+<link rel="stylesheet" href="{% static 'global/main.css' %}" />
+
     <p><b>{{ question }}</b>はどちらですか？</p>
 
     <form method="post">
@@ -44,7 +47,7 @@
     <style>
         .confidence-container {
             display: flex;  /* 横並びにする */
-            gap: 23px;  /* 各ラジオボタンの間隔 */
+            gap: 32px;  /* 各ラジオボタンの間隔 */
             flex-wrap: wrap; /* 画面幅が狭いとき折り返し */
         }
 

@@ -1,0 +1,228 @@
+@charset "UTF-8";
+
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+/* body,
+p,
+td,
+li {
+  /* Normal text and table cell text */
+  /* font-family: "メイリオ", "Meiryo", sans-serif;
+  font-size: 20px;
+  color: Black;
+} */
+
+* {
+  /* Normal text */
+  font-family: "メイリオ", "Meiryo", sans-serif;
+  font-size: 20px;
+  color: Black;
+}
+
+.btn {
+  float: right;
+  font-size: 24px;
+}
+
+.otree-btn-next {
+  float: right;
+  font-size: 24px;
+}
+
+/* .input[type="checkbox"] {
+  transform: scale(10);
+  zoom: 10;
+  margin: 6px 6px 6px 6px;
+} */
+
+p.caption {
+  /* Caption */
+  font-family: "Arial", "Times New Roman", "Meiryo", sans-serif;
+  font-size: 20px;
+  padding: 0.5em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.button {
+  font-size: 24px;
+}
+
+strong {
+  font-size: 24px;
+  font-family: "メイリオ", "Meiryo", sans-serif;
+}
+
+h1 {
+  /* Header 1 */
+  font-family: "Meiryo", sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  color: black;
+}
+
+h2 {
+  /* Header 2 */
+  font-family: "Meiryo", sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: black;
+  /* position: relative; */
+  /* padding: 0.25em 0.5em 0.5em 0.75em; */
+}
+
+h3 {
+  /* Header 3 */
+  font-family: "Meiryo", sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: black;
+  /* padding: 0.25em 0.25em 0.25em 0.75em; */
+}
+
+h4 {
+  /* Header 4 */
+  font-family: "Meiryo", sans-serif;
+  font-size: 24px;
+  /* padding: 0.25em 0.25em 0.25em 0.75em; */
+  color: black;
+}
+
+.main-container {
+  max-width: 1600px !important;
+}
+
+.card {
+  font-size: 0.9rem;
+  border: 1px solid black;
+  background-color: #cfcfcf;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-size: 24px;
+}
+
+.card p {
+  font-size: 18px;
+}
+
+h4[class="card-header"] {
+  background-color: #c7c7c7;
+}
+
+/* table */
+table {
+  border-collapse: collapse;
+  width: 120%;
+  word-wrap: break-word;
+  overflow-wrap : break-word;
+  table-layout: fixed;
+}
+
+th {
+  font-size: 24px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+tr[class="table-dark"] th{
+  color: white
+}
+
+td {
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+td.center {
+  text-align: center;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.blackbox {
+  padding: 1em;
+  background: gray;
+  color: white;
+  border: 2px solid black;
+  border-radius: 20px;
+}
+
+.center {
+  text-align: center;
+}
+
+.answer-incorrect {
+  color: red;
+  font-size: 18px;
+}
+
+.answer-correct {
+  color: green;
+  font-size: 18px;
+}
+
+.cooperate {
+  color: red;
+}
+
+.defect {
+  color: blue;
+}
+
+.clear {
+  float: left;
+}
+
+s::before,
+s::after {
+  clip-path: inset(100%);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+s::before {
+  content: " [start of stricken text] ";
+}
+
+s::after {
+  content: " [end of stricken text] ";
+}
+
+/* 中央寄せのためのstyling */
+.outer {
+  /* max-width: 80%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner {
+  position: absolute;
+  /* text-align: center; */
+  top: 20%;
+  /* left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  -webkit- transform: translateY(-50%) translateX(-50%); */
+}
+
+.outer_more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner_more {
+  position: absolute;
+  text-align: center;
+  top: 20%;
+  /* left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  -webkit- transform: translateY(-50%) translateX(-50%); */
+}
