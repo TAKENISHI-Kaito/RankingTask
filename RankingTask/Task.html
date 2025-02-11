@@ -23,7 +23,9 @@
         <br>
 
         <p><b>{{ confidence_question }}</b></p>
-        <p>まったく自信がない ---------------- どちらでもない ---------------- とても自信がある</p>
+        <label class="scale">
+            <p>まったく自信がない ---------------- どちらでもない ---------------- とても自信がある</p>
+        </label>
         <div class="confidence-container">
             {% for choice in confidence_choices %}
                 <label class="confidence-option">
@@ -43,12 +45,16 @@
     <style>
         .confidence-container {
             display: flex;  /* 横並びにする */
-            gap: 32px;  /* 各ラジオボタンの間隔 */
+            gap: 28px;  /* 各ラジオボタンの間隔 */
             flex-wrap: wrap; /* 画面幅が狭いとき折り返し */
         }
 
         .confidence-option {
             display: inline-block;
+        }
+
+        .scale {
+            font-size: 15pt;
         }
     </style>
 {{ endblock }}
