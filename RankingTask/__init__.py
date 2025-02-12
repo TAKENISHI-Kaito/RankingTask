@@ -46,7 +46,7 @@ class Player(BasePlayer):
     ranking_task = models.LongStringField()
     confidence = models.CharField(
         initial = None,
-        choices = ['-5', '-4', '-3', '-2', '-1', '0', '+1', '+2', '+3', '+4', '+5'],
+        choices = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
         verbose_name = 'その判断にどのくらい自信がありますか？',
         widget = widgets.RadioSelect()
     )
@@ -112,13 +112,14 @@ class Demographic(Page):
     def is_displayed(player):
         return player.round_number == 2
     
-    def error_message(player, value):
-        if not value.get('id_number'):
-            return '回答を記入してください。'
-        if not value.get('gender'):
-            return '回答を選択してください。'
-        if not value.get('age'):
-            return '回答を記入してください。'
+    def error_message(player, values):
+        print('value is ', values)
+        if not values['id_number']:
+            return 'ID番号を入力してください。'
+        if not values['gender']:
+            return 'いずれかの性別を選択してください。'
+        if not values['age']:
+            return '年齢を入力してください。'
     
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -223,13 +224,20 @@ class Task(Page):
             'option1': current_question['option1'],
             'option2': current_question['option2'],
             'confidence_question': 'その判断にどのくらい自信がありますか？',
-            'confidence_choices': ['-5', '-4', '-3', '-2', '-1', '0', '+1', '+2', '+3', '+4', '+5']
+            'confidence_choices': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
         }
     
-        def error_message(player, value):
-            if not value.get('ranking_task'):
-                return '回答を選択してください。'
-    
+    @staticmethod
+    def error_message(player, values):
+        print('Received values:', values)  # デバッグ用
+        errors = {}
+        if not values.get('ranking_task'):
+            errors['ranking_task'] = '回答を選択してください。'
+        if not values.get('confidence'):
+            errors['confidence'] = '自信の程度を教えてください。'
+        if errors:
+            return errors
+
     @staticmethod
     def before_next_page(player, timeout_happened):
         task_cycle_length = 2 + C.NUM_PAIRS

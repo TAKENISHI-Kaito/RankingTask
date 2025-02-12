@@ -11,23 +11,23 @@
     <form method="post">
         <p>
             <label>
-                <input type="radio" name="ranking_task" value="{{ option1 }}"> {{ option1 }}
+                <input type="radio" name="ranking_task" value="{{ option1 }}" required> {{ option1 }}
             </label>
         </p>
         <p>
             <label>
-                <input type="radio" name="ranking_task" value="{{ option2 }}"> {{ option2 }}
+                <input type="radio" name="ranking_task" value="{{ option2 }}" required> {{ option2 }}
             </label>
         </p>
 
         <br>
 
         <p><b>{{ confidence_question }}</b></p>
-        <p class="small-font">まったく自信がない -------------- どちらでもない -------------- とても自信がある</p>
+        <p class="small-font">まったく自信がない ------------------------------------------------ とても自信がある</p>
         <div class="confidence-container">
             {% for choice in confidence_choices %}
                 <label class="confidence-option">
-                    <input type="radio" name="confidence" value="{{ choice }}"> {{ choice }}
+                    <input type="radio" name="confidence" value="{{ choice }}" required> {{ choice }}
                 </label>
             {% endfor %}
         </div>
@@ -43,7 +43,7 @@
     <style>
         .confidence-container {
             display: flex;  /* 横並びにする */
-            gap: 26px;  /* 各ラジオボタンの間隔 */
+            gap: 28pt;  /* 各ラジオボタンの間隔 */
             flex-wrap: wrap; /* 画面幅が狭いとき折り返し */
         }
 
