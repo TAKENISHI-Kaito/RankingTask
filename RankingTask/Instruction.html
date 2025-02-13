@@ -1,33 +1,34 @@
 {{ block content }}
-<link rel="stylesheet" href="{% static 'global/main.css' %}" />
+<body oncontextmenu="return false;">
+    <link rel="stylesheet" href="{% static 'global/main.css' %}" />
 
-<p> これから，<b> {{ question }} </b>はどちらか考えてもらいます。</p>
+    <p> これから，<b> {{ question }} </b>はどちらか考えてもらいます。</p>
 
-<div style="background-color: #e6e6e6;">
-    <h5>例題</h5>
-    <p>
-        <b> {{ question }} </b>はどちらですか？
-    </p>
-    <ul ul  style="list-style-type:circle;">
-        <li> {{ example1 }} </li>
-        <li> {{ example2 }} </li>
+    <div style="background-color: #e6e6e6;">
+        <h5>例題</h5>
+        <p>
+            <b> {{ question }} </b>はどちらですか？
+        </p>
+        <ul ul  style="list-style-type:circle;">
+            <li> {{ example1 }} </li>
+            <li> {{ example2 }} </li>
+        </ul>
+    </div>
+
+    <small>注）</small>
+    <ul>
+        {% for note in annotations %}
+            <li><small>{{ note }}</small></li>
+        {% endfor %}
     </ul>
-</div>
-
-<small>注）</small>
-<ul>
-    {% for note in annotations %}
-        <li><small>{{ note }}</small></li>
-    {% endfor %}
-</ul>
-
-<br>
-
-<p>
-    次のページから問題が始まります。
-</p>
 
     <br>
-    <button type="submit">次へ</button>
 
+    <p>
+        次のページから問題が始まります。
+    </p>
+
+        <br>
+        <button type="submit">次へ</button>
+</body>
 {{ endblock }}

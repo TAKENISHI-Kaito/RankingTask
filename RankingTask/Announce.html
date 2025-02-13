@@ -1,18 +1,19 @@
 {{ block content }}
-
-<link rel="stylesheet" href="{% static 'global/main.css' %}" />
-<br>
-<br>
-<br>
-<p>これから{{ task_order }}つ目の課題を始めます。</p>
-<p>種類：{{ task_kind }}</p>
-
+<body oncontextmenu="return false;">
+    <link rel="stylesheet" href="{% static 'global/main.css' %}" />
     <br>
-    <button type="submit">次へ</button>
+    <br>
+    <br>
+    <p>これから{{ task_order }}つ目の課題を始めます。</p>
+    <p>種類：{{ task_kind }}</p>
 
-<style>
-    * {
-        font-size: 23pt;
-    }
-</style>
+        <br>
+        <button type="submit">次へ</button>
+
+    <style>
+        * {
+            font-size: 23pt;
+        }
+    </style>
+</body>
 {{ endblock }}

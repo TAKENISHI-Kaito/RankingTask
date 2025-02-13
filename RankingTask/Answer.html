@@ -3,14 +3,15 @@
 {{ endblock }}
 
 {{ block content }}
+<body oncontextmenu="return false;">
+    <link rel="stylesheet" href="{% static 'global/main.css' %}" />
+    <p>
+        これで全ての問題は終了です。あなたは全{{ total_questions }}問中{{ total_correct_count }}問正解しました。
+    </p>
+    <p>
+        あなたが獲得した報酬は{{ reward }}円です。
+    </p>
 
-<link rel="stylesheet" href="{% static 'global/main.css' %}" />
-<p>
-    これで全ての問題は終了です。あなたは全{{ total_questions }}問中{{ total_correct_count }}問正解しました。
-</p>
-<p>
-    あなたが獲得した報酬は{{ reward }}円です。
-</p>
-
-<button type="submit">次へ</button>
+    <button type="submit">次へ</button>
+</body>
 {{ endblock }}
